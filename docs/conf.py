@@ -98,6 +98,11 @@ html_title = '{0} v{1}'.format(project, release)
 # Output file base name for HTML help builder.
 htmlhelp_basename = project + 'doc'
 
+html_theme_options = {
+    'logotext1': 'astro',       # white,  semi-bold
+    'logotext2': 'py',          # orange, light
+    'logotext3': ':specutils'   # white,  light
+    }
 
 # -- Options for LaTeX output --------------------------------------------------
 
