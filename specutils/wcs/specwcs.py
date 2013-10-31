@@ -143,12 +143,19 @@ class Spectrum1DLinearWCS(BaseSpectrum1DWCS):
             except (u.UnitsException, TypeError):
                 raise Spectrum1DWCSUnitError("No units were specified and CUNIT did not contain unit information.")
 
+
         try:
             cdelt = header['CDELT%i' % spectroscopic_axis_number]
+        except KeyError:
+            try:
+                cdelt = header['CD%i_%i' % (spectroscopic_axis_number,spectroscopic_axis_number)]
+            except KeyError:
+                raise Spectrum1DWCSFITSError('Necessary keywords (CDELT or CD) missing - can not reconstruct WCS')
+        try:
             crpix = header['CRPIX%i' % spectroscopic_axis_number]
             crval = header['CRVAL%i' % spectroscopic_axis_number]
         except KeyError:
-            raise Spectrum1DWCSFITSError('Necessary keywords (CRDELT, CRPIX, CRVAL) missing - can not reconstruct WCS')
+            raise Spectrum1DWCSFITSError('Necessary keywords (CRPIX, CRVAL) missing - can not reconstruct WCS')
 
         # What happens if both of them are present (fix???)
         #if cdelt is None:

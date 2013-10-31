@@ -7,7 +7,7 @@ from astropy import units as u
 from specutils.wcs import specwcs
 from specutils import Spectrum1D
 
-def read_fits(filename, dispersion_unit=None, flux_unit=None):
+def read_fits(filename, dispersion_unit=None, flux_unit=None, debug=False):
 
     if dispersion_unit:
         dispersion_unit = u.Unit(dispersion_unit)
@@ -17,7 +17,9 @@ def read_fits(filename, dispersion_unit=None, flux_unit=None):
     for fits_wcs in specwcs.fits_capable_wcs:
         try:
             wcs = fits_wcs.from_fits_header(header, unit=dispersion_unit)
-        except specwcs.Spectrum1DWCSFITSError:
+        except specwcs.Spectrum1DWCSFITSError as E:
+            if debug:
+                print E
             continue
         except specwcs.Spectrum1DWCSUnitError:
             raise specwcs.Spectrum1DWCSUnitError('%s can read WCS information in the file, however no dispersion unit'
